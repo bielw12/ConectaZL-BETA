@@ -4,42 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Portal de Notícias{% endblock %}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-<body class="bg-gray-100">
-    <nav class="bg-blue-600 text-white p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="{% url 'home' %}" class="text-2xl font-bold">Portal de Notícias</a>
-            <div class="space-x-4">
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="{% url 'home' %}" class="nav-brand">📰 Portal de Notícias</a>
+            <div class="nav-links">
                 {% if user.is_authenticated %}
                     {% if user.profile.role == 'jornalista' or user.profile.role == 'admin' %}
-                        <a href="{% url 'article_create' %}" class="hover:text-gray-200">Criar Artigo</a>
+                        <a href="{% url 'article_create' %}" class="nav-link">✍️ Criar Artigo</a>
                     {% endif %}
-                    <span>Olá, {{ user.username }}</span>
-                    <a href="{% url 'logout' %}" class="hover:text-gray-200">Sair</a>
+                    <span class="nav-link">Olá, <strong>{{ user.username }}</strong></span>
+                    <a href="{% url 'logout' %}" class="nav-link">Sair</a>
                 {% else %}
-                    <a href="{% url 'login' %}" class="hover:text-gray-200">Entrar</a>
-                    <a href="{% url 'register' %}" class="hover:text-gray-200">Registrar</a>
+                    <a href="{% url 'login' %}" class="nav-link">Entrar</a>
+                    <a href="{% url 'register' %}" class="nav-link btn-primary">Registrar</a>
                 {% endif %}
             </div>
         </div>
     </nav>
 
     {% if messages %}
-        <div class="container mx-auto mt-4">
+        <div class="messages">
             {% for message in messages %}
-                <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-2">
-                    {{ message }}
+                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    <span>
+                        {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}❌{% else %}ℹ️{% endif %}
+                    </span>
+                    <span>{{ message }}</span>
                 </div>
             {% endfor %}
         </div>
     {% endif %}
 
-    <main class="container mx-auto my-8">
+    <main class="container">
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-gray-800 text-white text-center p-4 mt-8">
+    <footer>
         <p>&copy; 2025 Portal de Notícias - Todos os direitos reservados</p>
     </footer>
 

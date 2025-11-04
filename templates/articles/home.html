@@ -3,56 +3,87 @@
 {% block title %}Início - Portal de Notícias{% endblock %}
 
 {% block content %}
-<div class="mb-8">
-    <h1 class="text-4xl font-bold mb-6">Notícias em Destaque</h1>
-    {% if featured_articles %}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {% for article in featured_articles %}
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                    {% if article.image %}
-                        <img src="{{ article.image.url }}" alt="{{ article.title }}" class="w-full h-48 object-cover">
-                    {% endif %}
-                    <div class="p-4">
-                        <h3 class="text-xl font-bold mb-2">{{ article.title }}</h3>
-                        <p class="text-gray-600 mb-4">{{ article.excerpt|truncatewords:20 }}</p>
-                        <a href="{% url 'article_detail' article.slug %}" class="text-blue-600 hover:underline">Leia mais →</a>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+<div class="hero">
+    <h1>🌟 Bem-vindo ao Portal de Notícias</h1>
+    <p>As melhores notícias, sempre atualizadas para você!</p>
 </div>
 
-<h2 class="text-3xl font-bold mb-6">Todas as Notícias</h2>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+{% if featured_articles %}
+<div class="mb-8">
+    <h2 class="section-header">⭐ Notícias em Destaque</h2>
+    <div class="grid">
+        {% for article in featured_articles %}
+            <article class="card">
+                {% if article.image %}
+                    <img src="{{ article.image.url }}" alt="{{ article.title }}" class="card-image">
+                {% else %}
+                    <div class="card-image"></div>
+                {% endif %}
+                <div class="card-content">
+                    <h3 class="card-title">{{ article.title }}</h3>
+                    <div class="card-meta">
+                        📅 {{ article.created_at|date:"d/m/Y H:i" }} | ✍️ {{ article.author.username }}
+                    </div>
+                    <p class="card-excerpt">{{ article.excerpt|truncatewords:20 }}</p>
+                    <div class="card-footer">
+                        <a href="{% url 'article_detail' article.slug %}" class="card-link">Leia mais →</a>
+                        <div class="card-stats">
+                            <span>❤️ {{ article.total_likes }}</span>
+                            <span>👁️ {{ article.views }}</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<h2 class="section-header">📰 Todas as Notícias</h2>
+<div class="grid">
     {% for article in articles %}
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <article class="card">
             {% if article.image %}
-                <img src="{{ article.image.url }}" alt="{{ article.title }}" class="w-full h-48 object-cover">
+                <img src="{{ article.image.url }}" alt="{{ article.title }}" class="card-image">
+            {% else %}
+                <div class="card-image"></div>
             {% endif %}
-            <div class="p-4">
-                <h3 class="text-xl font-bold mb-2">{{ article.title }}</h3>
-                <p class="text-sm text-gray-500 mb-2">{{ article.created_at|date:"d/m/Y H:i" }} - {{ article.author.username }}</p>
-                <p class="text-gray-600 mb-4">{{ article.excerpt|truncatewords:15 }}</p>
-                <div class="flex justify-between items-center">
-                    <a href="{% url 'article_detail' article.slug %}" class="text-blue-600 hover:underline">Leia mais →</a>
-                    <span class="text-sm text-gray-500">❤️ {{ article.total_likes }} | 👁️ {{ article.views }}</span>
+            <div class="card-content">
+                <h3 class="card-title">{{ article.title }}</h3>
+                <div class="card-meta">
+                    📅 {{ article.created_at|date:"d/m/Y H:i" }} | ✍️ {{ article.author.username }}
+                </div>
+                <p class="card-excerpt">{{ article.excerpt|truncatewords:15 }}</p>
+                <div class="card-footer">
+                    <a href="{% url 'article_detail' article.slug %}" class="card-link">Leia mais →</a>
+                    <div class="card-stats">
+                        <span>❤️ {{ article.total_likes }}</span>
+                        <span>👁️ {{ article.views }}</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </article>
     {% empty %}
-        <p class="col-span-3 text-center text-gray-500">Nenhuma notícia publicada ainda.</p>
+        <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-state-icon">📭</div>
+            <p class="empty-state-text">Nenhuma notícia publicada ainda.</p>
+            {% if user.is_authenticated %}
+                {% if user.profile.role == 'jornalista' or user.profile.role == 'admin' %}
+                    <a href="{% url 'article_create' %}" class="btn btn-primary mt-4">✍️ Criar Primeira Notícia</a>
+                {% endif %}
+            {% endif %}
+        </div>
     {% endfor %}
 </div>
 
 {% if articles.has_other_pages %}
-    <div class="mt-8 flex justify-center space-x-2">
+    <div class="pagination">
         {% if articles.has_previous %}
-            <a href="?page={{ articles.previous_page_number }}" class="px-4 py-2 bg-blue-600 text-white rounded">Anterior</a>
+            <a href="?page={{ articles.previous_page_number }}" class="pagination-link">← Anterior</a>
         {% endif %}
-        <span class="px-4 py-2">Página {{ articles.number }} de {{ articles.paginator.num_pages }}</span>
+        <span class="pagination-info">Página {{ articles.number }} de {{ articles.paginator.num_pages }}</span>
         {% if articles.has_next %}
-            <a href="?page={{ articles.next_page_number }}" class="px-4 py-2 bg-blue-600 text-white rounded">Próxima</a>
+            <a href="?page={{ articles.next_page_number }}" class="pagination-link">Próxima →</a>
         {% endif %}
     </div>
 {% endif %}

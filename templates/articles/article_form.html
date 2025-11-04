@@ -3,60 +3,76 @@
 {% block title %}{% if article %}Editar{% else %}Criar{% endif %} Artigo{% endblock %}
 
 {% block content %}
-<div class="bg-white rounded-lg shadow-lg p-8">
-    <h2 class="text-2xl font-bold mb-6">{% if article %}Editar{% else %}Criar{% endif %} Artigo</h2>
+<div class="form-container" style="max-width: 900px;">
+    <h2 class="form-title">{% if article %}✏️ Editar Artigo{% else %}✍️ Criar Novo Artigo{% endif %}</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Título</label>
-            <input type="text" name="title" value="{% if article %}{{ article.title }}{% endif %}" class="w-full border rounded p-2" required>
+        <div class="form-group">
+            <label for="id_title" class="form-label">📝 Título do Artigo</label>
+            <input type="text" name="title" id="id_title" value="{% if article %}{{ article.title }}{% endif %}" class="form-input" required placeholder="Digite um título chamativo...">
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Resumo</label>
-            <textarea name="excerpt" rows="2" class="w-full border rounded p-2">{% if article %}{{ article.excerpt }}{% endif %}</textarea>
+        
+        <div class="form-group">
+            <label for="id_excerpt" class="form-label">📄 Resumo (opcional)</label>
+            <textarea name="excerpt" id="id_excerpt" rows="2" class="form-textarea" placeholder="Breve descrição do artigo...">{% if article %}{{ article.excerpt }}{% endif %}</textarea>
+            <small style="color: #6b7280; font-size: 0.875rem;">Uma prévia curta que aparecerá nos cartões de notícias</small>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Conteúdo</label>
-            <textarea name="content" rows="10" class="w-full border rounded p-2" required>{% if article %}{{ article.content }}{% endif %}</textarea>
+        
+        <div class="form-group">
+            <label for="id_content" class="form-label">📰 Conteúdo</label>
+            <textarea name="content" id="id_content" rows="12" class="form-textarea" required placeholder="Escreva o conteúdo completo do artigo...">{% if article %}{{ article.content }}{% endif %}</textarea>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Imagem</label>
-            <input type="file" name="image" class="w-full border rounded p-2">
+        
+        <div class="form-group">
+            <label for="id_image" class="form-label">🖼️ Imagem de Capa</label>
+            <input type="file" name="image" id="id_image" class="form-input" accept="image/*">
+            {% if article.image %}
+                <small style="color: #6b7280; font-size: 0.875rem;">Imagem atual: {{ article.image.name }}</small>
+            {% endif %}
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Tags (separadas por vírgula)</label>
-            <input type="text" name="tags" value="{% if article %}{% for tag in article.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}" class="w-full border rounded p-2">
+        
+        <div class="form-group">
+            <label for="id_tags" class="form-label">🏷️ Tags</label>
+            <input type="text" name="tags" id="id_tags" value="{% if article %}{% for tag in article.tags.all %}{{ tag.name }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}" class="form-input" placeholder="política, esportes, tecnologia...">
+            <small style="color: #6b7280; font-size: 0.875rem;">Separe as tags por vírgula</small>
         </div>
-        <div class="grid grid-cols-2 gap-4 mb-4">
-            <div>
-                <label class="block text-gray-700 mb-2">Latitude</label>
-                <input type="text" name="latitude" value="{% if article %}{{ article.latitude }}{% endif %}" class="w-full border rounded p-2">
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="id_latitude" class="form-label">📍 Latitude</label>
+                <input type="number" step="any" name="latitude" id="id_latitude" value="{% if article %}{{ article.latitude }}{% endif %}" class="form-input" placeholder="-23.5505">
             </div>
-            <div>
-                <label class="block text-gray-700 mb-2">Longitude</label>
-                <input type="text" name="longitude" value="{% if article %}{{ article.longitude }}{% endif %}" class="w-full border rounded p-2">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label for="id_longitude" class="form-label">📍 Longitude</label>
+                <input type="number" step="any" name="longitude" id="id_longitude" value="{% if article %}{{ article.longitude }}{% endif %}" class="form-input" placeholder="-46.6333">
             </div>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Nome do Local</label>
-            <input type="text" name="location_name" value="{% if article %}{{ article.location_name }}{% endif %}" class="w-full border rounded p-2">
+        
+        <div class="form-group">
+            <label for="id_location_name" class="form-label">🗺️ Nome do Local</label>
+            <input type="text" name="location_name" id="id_location_name" value="{% if article %}{{ article.location_name }}{% endif %}" class="form-input" placeholder="São Paulo, Brasil">
         </div>
-        <div class="mb-4">
-            <label class="flex items-center">
-                <input type="checkbox" name="published" {% if article.published %}checked{% endif %} class="mr-2">
-                <span>Publicar artigo</span>
-            </label>
+        
+        <div class="form-group">
+            <div class="form-checkbox-group">
+                <input type="checkbox" name="published" id="id_published" {% if article.published %}checked{% endif %} class="form-checkbox">
+                <label for="id_published">✅ Publicar artigo imediatamente</label>
+            </div>
         </div>
+        
         {% if user.profile.role == 'admin' %}
-            <div class="mb-4">
-                <label class="flex items-center">
-                    <input type="checkbox" name="featured" {% if article.featured %}checked{% endif %} class="mr-2">
-                    <span>Destaque na página inicial</span>
-                </label>
+            <div class="form-group">
+                <div class="form-checkbox-group">
+                    <input type="checkbox" name="featured" id="id_featured" {% if article.featured %}checked{% endif %} class="form-checkbox">
+                    <label for="id_featured">⭐ Destacar na página inicial</label>
+                </div>
             </div>
         {% endif %}
-        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">Salvar</button>
-        <a href="{% if article %}{% url 'article_detail' article.slug %}{% else %}{% url 'home' %}{% endif %}" class="ml-2 bg-gray-300 px-6 py-2 rounded hover:bg-gray-400">Cancelar</a>
+        
+        <div class="btn-group">
+            <button type="submit" class="btn btn-success">💾 Salvar Artigo</button>
+            <a href="{% if article %}{% url 'article_detail' article.slug %}{% else %}{% url 'home' %}{% endif %}" class="btn btn-secondary">❌ Cancelar</a>
+        </div>
     </form>
 </div>
 {% endblock %}

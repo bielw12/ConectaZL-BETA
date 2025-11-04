@@ -3,20 +3,26 @@
 {% block title %}Login - Portal de Notícias{% endblock %}
 
 {% block content %}
-<div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
-    <h2 class="text-2xl font-bold mb-6">Entrar</h2>
+<div class="form-container">
+    <h2 class="form-title">🔐 Entrar</h2>
     <form method="post">
         {% csrf_token %}
-        <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Nome de usuário</label>
-            {{ form.username }}
+        {% if form.errors %}
+            <div class="message error mb-4">
+                <span>❌</span>
+                <span>Usuário ou senha incorretos. Tente novamente.</span>
+            </div>
+        {% endif %}
+        <div class="form-group">
+            <label for="id_username" class="form-label">Nome de usuário</label>
+            <input type="text" name="username" id="id_username" class="form-input" required autofocus>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 mb-2">Senha</label>
-            {{ form.password }}
+        <div class="form-group">
+            <label for="id_password" class="form-label">Senha</label>
+            <input type="password" name="password" id="id_password" class="form-input" required>
         </div>
-        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Entrar</button>
+        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
     </form>
-    <p class="mt-4 text-center">Não tem conta? <a href="{% url 'register' %}" class="text-blue-600 hover:underline">Registre-se</a></p>
+    <p class="mt-4 text-center">Não tem conta? <a href="{% url 'register' %}" class="card-link">Registre-se aqui</a></p>
 </div>
 {% endblock %}
