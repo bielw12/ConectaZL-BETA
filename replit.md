@@ -4,6 +4,16 @@
 Portal de notícias completo desenvolvido em Django + Python com sistema de autenticação, publicação de artigos, comentários moderados, curtidas, geolocalização e API REST.
 
 ## Mudanças Recentes
+- **04/11/2025**: Sistema de Administração Completo Implementado
+  - ✅ Sistema de aprovação de artigos (apenas admins podem aprovar publicações)
+  - ✅ Dashboard administrativo com estatísticas e gráficos em tempo real
+  - ✅ Interface de aprovação/rejeição de artigos com notas de feedback
+  - ✅ Gerenciamento de comentários pendentes
+  - ✅ Gerenciamento de usuários e alteração de perfis
+  - ✅ Redirecionamento inteligente após login (admins → dashboard, outros → home)
+  - ✅ Controle duplo de visibilidade (published + approval_status)
+  - ✅ Gráficos interativos com Chart.js
+  
 - **03/11/2025**: Projeto inicial criado com todas as funcionalidades principais implementadas
   - Sistema de autenticação com três perfis (leitor, jornalista, administrador)
   - CRUD completo de artigos com editor rico (django-summernote)
@@ -20,11 +30,12 @@ Portal de notícias completo desenvolvido em Django + Python com sistema de aute
 portal_noticias/          # Projeto principal Django
 ├── users/               # App de usuários e perfis
 │   ├── models.py       # Profile com roles (leitor, jornalista, admin)
-│   ├── views.py        # Login, logout, registro
+│   ├── views.py        # Login, logout, registro com redirecionamento inteligente
 │   └── admin.py        # Admin panel customizado
 ├── articles/           # App de artigos/notícias
-│   ├── models.py       # Article, Like
+│   ├── models.py       # Article com sistema de aprovação, Like
 │   ├── views.py        # CRUD de artigos, curtidas
+│   ├── admin_views.py  # Dashboard e painel administrativo completo
 │   └── admin.py        # Admin com Summernote
 ├── comments/           # App de comentários
 │   ├── models.py       # Comment com moderação
@@ -65,6 +76,11 @@ portal_noticias/          # Projeto principal Django
 - Contador de visualizações
 - Sistema de destaques para página inicial
 - Slug automático gerado do título
+- **NOVO**: Sistema de aprovação com 3 status (pendente, aprovado, rejeitado)
+- **NOVO**: Controle duplo de visibilidade (published + approval_status)
+- **NOVO**: Jornalistas criam artigos com status "pendente" automaticamente
+- **NOVO**: Admins podem criar artigos já aprovados
+- **NOVO**: Notas de aprovação/rejeição para feedback aos jornalistas
 
 ### 3. Comentários
 - Sistema de comentários moderados
