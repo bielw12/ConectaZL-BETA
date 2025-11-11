@@ -1,8 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Profile
+from articles.models import Article
 
 
 def register_view(request):
@@ -47,3 +50,41 @@ def logout_view(request):
     logout(request)
     messages.info(request, 'Você saiu da sua conta.')
     return redirect('home')
+
+
+def journalist_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    articles = Article.objects.filter(author=user, published=True, approval_status='approved').order_by('-created_at')
+    
+    context = {
+        'profile_user': user,
+        'articles': articles,
+        'total_posts': articles.count(),
+    }
+    return render(request, 'users/journalist_profile.html', context)
+
+
+@login_required
+def edit_profile(request):
+    if request.method == 'POST':
+        user = request.user
+        profile = user.profile
+        
+        user.first_name = request.POST.get('first_name', '')
+        user.last_name = request.POST.get('last_name', '')
+        profile.bio = request.POST.get('bio', '')
+        profile.location = request.POST.get('location', '')
+        
+        if 'avatar' in request.FILES:
+            profile.avatar = request.FILES['avatar']
+        
+        if 'banner' in request.FILES:
+            profile.banner = request.FILES['banner']
+        
+        user.save()
+        profile.save()
+        
+        messages.success(request, 'Perfil atualizado com sucesso!')
+        return redirect('journalist_profile', username=user.username)
+    
+    return render(request, 'users/edit_profile.html')

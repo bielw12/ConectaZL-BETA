@@ -30,7 +30,6 @@ urlpatterns = [
     path('', article_views.home, name='home'),
     path('destaques/', article_views.highlights_page, name='highlights'),
     path('noticias/', article_views.news_feed, name='news_feed'),
-    path('jornalista/<str:username>/', article_views.journalist_profile, name='journalist_profile'),
     path('article/create/', article_views.article_create, name='article_create'),
     path('article/<slug:slug>/', article_views.article_detail, name='article_detail'),
     path('article/<slug:slug>/edit/', article_views.article_edit, name='article_edit'),
@@ -43,6 +42,8 @@ urlpatterns = [
     path('register/', user_views.register_view, name='register'),
     path('login/', user_views.login_view, name='login'),
     path('logout/', user_views.logout_view, name='logout'),
+    path('profile/<str:username>/', user_views.journalist_profile, name='user_profile'),
+    path('profile/edit/', user_views.edit_profile, name='edit_profile'),
     
     path('admin-dashboard/', admin_views.admin_dashboard, name='admin_dashboard'),
     path('admin-dashboard/articles/pending/', admin_views.admin_articles_pending, name='admin_articles_pending'),

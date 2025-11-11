@@ -77,18 +77,20 @@ nav {
     gap: 0.75rem;
 }
 
-.brand-icon {
-    width: 48px;
+.brand-logo {
     height: 48px;
-    background: var(--primary-color);
-    color: white;
-    border-radius: 50%;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.nav-brand:hover .brand-logo {
+    transform: scale(1.05);
+}
+
+.brand-text-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Almarai', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 800;
+    flex-direction: column;
+    gap: 0;
 }
 
 .brand-text {
@@ -96,18 +98,13 @@ nav {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--text-dark);
+    line-height: 1;
 }
 
 .brand-tagline {
     font-size: 0.75rem;
     color: var(--text-light);
-    margin-top: -0.5rem;
-}
-
-.nav-brand:hover .brand-icon {
-    background: var(--primary-dark);
-    transform: scale(1.05);
-    transition: all 0.3s ease;
+    margin-top: 0.15rem;
 }
 
 .nav-links {
@@ -181,6 +178,25 @@ nav {
     color: white;
     font-weight: 700;
     font-size: 1rem;
+}
+
+.user-avatar-small {
+    width: 36px;
+    height: 36px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.user-avatar-small:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(139, 61, 255, 0.3);
 }
 
 /* Container */
@@ -313,21 +329,12 @@ nav {
     color: white;
 }
 
-.hero-brand-icon {
-    width: 90px;
-    height: 90px;
-    background: linear-gradient(135deg, #FFD93D 0%, #FFB347 100%);
-    color: var(--primary-dark);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Almarai', sans-serif;
-    font-size: 3.5rem;
-    font-weight: 800;
-    flex-shrink: 0;
-    box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.3);
+.hero-brand-logo {
+    height: 120px;
+    width: auto;
+    filter: drop-shadow(0 8px 24px rgba(255, 255, 255, 0.4));
     animation: pulse 3s ease-in-out infinite;
+    flex-shrink: 0;
 }
 
 @keyframes pulse {

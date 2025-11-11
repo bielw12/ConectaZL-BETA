@@ -14,9 +14,11 @@
     <nav>
         <div class="nav-container">
             <a href="{% url 'home' %}" class="nav-brand">
-                <span class="brand-icon">C</span>
-                <span class="brand-text">Conecta ZL</span>
-                <span class="brand-tagline">Notícias que nos unem</span>
+                <img src="{% static 'images/logo.png' %}" alt="Conecta ZL" class="brand-logo">
+                <div class="brand-text-container">
+                    <span class="brand-text">Conecta ZL</span>
+                    <span class="brand-tagline">Notícias que nos unem</span>
+                </div>
             </a>
             <div class="nav-links">
                 <a href="{% url 'home' %}" class="nav-link">INÍCIO</a>
@@ -24,11 +26,12 @@
                 <a href="{% url 'news_feed' %}" class="nav-link">NOTÍCIAS</a>
                 
                 {% if user.is_authenticated %}
-                    <div class="nav-user-menu">
-                        <button class="nav-user-button">
-                            <span class="user-avatar">{{ user.username|slice:":1"|upper }}</span>
-                        </button>
-                    </div>
+                    <a href="{% url 'user_profile' user.username %}" class="nav-link">
+                        <span class="user-avatar-small" {% if user.profile.avatar %}style="background-image: url('{{ user.profile.avatar.url }}'); background-size: cover; font-size: 0;"{% endif %}>
+                            {{ user.username|slice:":1"|upper }}
+                        </span>
+                    </a>
+                    <a href="{% url 'logout' %}" class="nav-link nav-link-auth">Sair</a>
                 {% else %}
                     <a href="{% url 'login' %}" class="nav-link nav-link-auth">Entrar</a>
                     <a href="{% url 'register' %}" class="nav-link nav-link-register">Registrar</a>
