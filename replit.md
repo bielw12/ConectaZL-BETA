@@ -5,12 +5,15 @@ Portal de notícias da Zona Leste desenvolvido em Django + Python com sistema de
 
 ## Mudanças Recentes
 - **17/11/2025**: Melhorias de UX e Identidade Visual
-  - ✅ **Nova Logo**: Substituída pela logo oficial do Conecta ZL com responsividade otimizada
+  - ✅ **Nova Logo**: Substituída pela logo oficial do Conecta ZL com responsividade otimizada em navbar e landing page
+  - ✅ **Navbar Minimalista**: Removido texto "Conecta ZL" e "Notícias que nos unem", mantendo apenas a logo
   - ✅ **Navbar Centralizada**: Abas INICIO, DESTAQUES e NOTICIAS centralizadas com layout responsivo em 3 colunas
+  - ✅ **Banner Full-Width**: Banner principal da landing page ocupa 100% da largura da tela (edge-to-edge)
   - ✅ **Footer Completo**: Adicionados links de redes sociais (X, YouTube, Instagram), Política de Privacidade, Termos de Uso e Anuncie Conosco
   - ✅ **Formulário Moderno de Postagem**: Redesign completo da página /article/create/ com layout similar ao X e LinkedIn
   - ✅ **Superusuário Admin**: Criado conta admin (username: admin, senha: admin123) para acesso ao painel administrativo
   - ✅ **Responsividade Mobile**: Todas as alterações otimizadas para dispositivos móveis e desktop
+  - ✅ **Arquitetura Full-Width**: Implementado sistema de blocks fullwidth no base.html para conteúdo que quebra o container
 
 - **04/11/2025**: Redesign Completo "Conecta ZL: Notícias que nos unem"
   - ✅ **Nova Identidade Visual**: Paleta roxa (#6E349D primary, #EFEDE3 secondary, #1E1E2A support)
