@@ -127,4 +127,18 @@
         {% endif %}
     </div>
 {% endif %}
+
+<div class="community-section">
+    <div class="community-content">
+        <div class="community-text">
+            <h2 class="community-title">Acompanhe ao vivo os principais acontecimentos da Zona Leste</h2>
+            <p class="community-description">No Conecta ZL você encontra as notícias e fatos mais relevantes do seu bairro e da sua comunidade. Somos o espaço de interação que proporciona voz e dá espaço às histórias que moldam o dia a dia. Chega de buscar longe: aqui, a notícia é nossa.</p>
+            <a href="{% url 'news_feed' %}" class="community-button">Saiba Mais</a>
+        </div>
+        <div class="community-image">
+            {% load static %}
+            <img src="{% static 'images/community.jpg' %}" alt="Conecta ZL" class="community-img">
+        </div>
+    </div>
+</div>
 {% endblock %}
