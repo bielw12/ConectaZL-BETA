@@ -1769,16 +1769,21 @@ nav {
 
 .community-image {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    padding: 2rem;
 }
 
-.community-img {
+.community-image img {
     width: 100%;
-    max-width: 500px;
+    max-width: 450px;
     height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    filter: drop-shadow(0 8px 24px rgba(255, 255, 255, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.community-image img:hover {
+    transform: scale(1.05);
 }
 
 @media (max-width: 768px) {
@@ -1803,7 +1808,7 @@ footer {
     color: white;
     text-align: center;
     padding: 1.5rem 2.5rem;
-    margin-top: 4rem;
+    margin-top: 0;
     border-top: 4px solid transparent;
     border-image: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 50%, var(--bg-gradient-end) 100%);
     border-image-slice: 1;
