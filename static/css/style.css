@@ -352,11 +352,9 @@ nav {
 @keyframes pulse {
     0%, 100% {
         transform: scale(1);
-        box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.3);
     }
     50% {
         transform: scale(1.05);
-        box-shadow: 0 12px 32px rgba(255, 107, 157, 0.6), 0 0 0 6px rgba(255, 255, 255, 0.4);
     }
 }
 
