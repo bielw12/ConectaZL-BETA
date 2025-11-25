@@ -4,7 +4,7 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
-packages = ["cacert", "freetype", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "pgadmin4", "tcl", "tk", "zlib"]
+packages = ["cacert", "freetype", "gcc", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "pgadmin4", "tcl", "tk", "zlib"]
 
 [userenv]
 
@@ -12,3 +12,31 @@ packages = ["cacert", "freetype", "lcms2", "libimagequant", "libjpeg", "libtiff"
 SECRET_KEY = "64ywygcpw3nwi&eon=_hpdc0(7-%soxi!xjbcdd6m+ldtwfsl7"
 DEBUG = "True"
 ALLOWED_HOSTS = "localhost,127.0.0.1,.replit.dev,.replit.app"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Django Server"
+
+[[workflows.workflow]]
+name = "Django Server"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python3.11 manage.py runserver 0.0.0.0:5000"
+waitForPort = 5000
+
+[[ports]]
+localPort = 5000
+externalPort = 80

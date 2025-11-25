@@ -21,3 +21,12 @@ tzdata==2025.2
 urllib3==2.5.0
 webencodings==0.5.1
 xyzservices==2025.11.0
+Django==5.2.8
+django-summernote==0.8.20.0
+django-taggit==6.1.0
+djangorestframework==3.16.1
+folium==0.20.0
+pillow==12.0.0
+psycopg2-binary==2.9.11
+python-decouple==3.8
+requests==2.32.5
