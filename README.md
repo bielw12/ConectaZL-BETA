@@ -594,6 +594,112 @@ profile.save()
 
 ---
 
+## 🚀 Deploy no PythonAnywhere
+
+### Passo a Passo
+
+#### 1. Clone o Repositório no PythonAnywhere
+
+```bash
+# No console Bash do PythonAnywhere
+git clone https://github.com/seu-usuario/ConectaZL.git
+cd ConectaZL
+```
+
+#### 2. Crie e Ative o Ambiente Virtual
+
+```bash
+mkvirtualenv --python=/usr/bin/python3.10 conectazl-env
+pip install -r requirements.txt
+```
+
+#### 3. Configure as Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
+# Para SQLite (desenvolvimento/projetos pequenos)
+USE_SQLITE=True
+DEBUG=False
+SECRET_KEY=sua-chave-secreta-super-segura
+ALLOWED_HOSTS=seu-usuario.pythonanywhere.com
+
+# OU para MySQL (recomendado para produção)
+USE_SQLITE=False
+MYSQL_NAME=seu-usuario$conectazl
+MYSQL_USER=seu-usuario
+MYSQL_PASSWORD=sua-senha-mysql
+MYSQL_HOST=seu-usuario.mysql.pythonanywhere-services.com
+```
+
+#### 4. Inicialize o Banco de Dados
+
+```bash
+# Comando bootstrap (recomendado) - faz tudo automaticamente
+python manage.py bootstrap
+
+# OU manualmente:
+python manage.py migrate
+python manage.py loaddata data_backup.json
+python manage.py collectstatic --noinput
+```
+
+#### 5. Configure o Web App
+
+Na aba **Web** do PythonAnywhere:
+
+1. **Source code**: `/home/seu-usuario/ConectaZL`
+2. **Working directory**: `/home/seu-usuario/ConectaZL`
+3. **Virtualenv**: `/home/seu-usuario/.virtualenvs/conectazl-env`
+
+#### 6. Configure o WSGI
+
+Edite o arquivo WSGI (link na aba Web):
+
+```python
+import os
+import sys
+
+path = '/home/seu-usuario/ConectaZL'
+if path not in sys.path:
+    sys.path.insert(0, path)
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'portal_noticias.settings'
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+```
+
+#### 7. Configure Arquivos Estáticos
+
+Na aba **Web** > **Static files**:
+
+| URL | Directory |
+|-----|-----------|
+| `/static/` | `/home/seu-usuario/ConectaZL/staticfiles` |
+| `/media/` | `/home/seu-usuario/ConectaZL/media` |
+
+#### 8. Recarregue o Web App
+
+Clique no botão **Reload** e acesse `https://seu-usuario.pythonanywhere.com`
+
+### Comando Bootstrap
+
+O projeto inclui um comando personalizado para facilitar a inicialização:
+
+```bash
+# Inicialização completa (migrations + dados + static)
+python manage.py bootstrap
+
+# Forçar reinicialização
+python manage.py bootstrap --force
+
+# Apenas migrations (sem dados)
+python manage.py bootstrap --skip-data
+```
+
+---
+
 ## 🤝 Contribuindo
 
 Contribuições são bem-vindas! Para contribuir:

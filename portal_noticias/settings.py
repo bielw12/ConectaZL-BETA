@@ -34,6 +34,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.replit.dev',
     'https://*.replit.app',
     'https://*.up.railway.app',
+    'https://*.pythonanywhere.com',
 ]
 
 
@@ -102,6 +103,8 @@ if USE_SQLITE:
     }
 else:
     DATABASE_URL = os.getenv('DATABASE_URL')
+    MYSQL_NAME = config('MYSQL_NAME', default='')
+    
     if DATABASE_URL:
         DATABASES = {
             'default': dj_database_url.config(
@@ -109,6 +112,20 @@ else:
                 conn_max_age=600,
                 conn_health_checks=True,
             )
+        }
+    elif MYSQL_NAME:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': MYSQL_NAME,
+                'USER': config('MYSQL_USER', default=''),
+                'PASSWORD': config('MYSQL_PASSWORD', default=''),
+                'HOST': config('MYSQL_HOST', default=''),
+                'PORT': config('MYSQL_PORT', default='3306'),
+                'OPTIONS': {
+                    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                },
+            }
         }
     else:
         DATABASES = {
